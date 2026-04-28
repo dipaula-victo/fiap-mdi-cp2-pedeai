@@ -1,28 +1,53 @@
-import { createContext, useState, useContext } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+} from 'react';
 
 const CarrinhoContext = createContext({});
 
 export function CarrinhoProvider({ children }) {
   const [carrinho, setCarrinho] = useState([]);
 
-  // Função para adicionar itens ao estado global
-  const adicionarAoCarrinho = (item) => {
-    setCarrinho((prevCarrinho) => [...prevCarrinho, item]);
-  };
+  // Adicionar item
+  function adicionarAoCarrinho(item) {
+    setCarrinho((prev) => [...prev, item]);
+  }
 
-  // Função para limpar o carrinho após a compra
-  const limparCarrinho = () => {
+  // Remover item
+  function removerDoCarrinho(id) {
+    setCarrinho((prev) =>
+      prev.filter((item) => item.id !== id)
+    );
+  }
+
+  // Limpar carrinho
+  function limparCarrinho() {
     setCarrinho([]);
-  };
+  }
+
+  // Total do carrinho
+  const total = carrinho.reduce(
+    (acc, item) => acc + item.preco,
+    0
+  );
 
   return (
-    <CarrinhoContext.Provider value={{ carrinho, setCarrinho, adicionarAoCarrinho, limparCarrinho }}>
+    <CarrinhoContext.Provider
+      value={{
+        carrinho,
+        setCarrinho,
+        adicionarAoCarrinho,
+        removerDoCarrinho,
+        limparCarrinho,
+        total,
+      }}
+    >
       {children}
     </CarrinhoContext.Provider>
   );
 }
 
-// Hook customizado para facilitar a vida do resto do grupo
 export function useCarrinho() {
   return useContext(CarrinhoContext);
 }

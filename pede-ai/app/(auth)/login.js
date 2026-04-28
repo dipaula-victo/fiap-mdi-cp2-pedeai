@@ -1,28 +1,158 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useState } from 'react';
+
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+
+import { router } from 'expo-router';
+
 import { useAuth } from '../../context/AuthContext';
-import { colors } from '../../constants/theme';
 
 export default function Login() {
   const { login } = useAuth();
 
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  const [erros, setErros] = useState({});
+
+  function validarFormulario() {
+    let novosErros = {};
+
+    // Regex de email
+    const emailRegex = /\S+@\S+\.\S+/;
+
+    if (!emailRegex.test(email)) {
+      novosErros.email =
+        'Digite um e-mail válido';
+    }
+
+    if (senha.length < 6) {
+      novosErros.senha =
+        'A senha deve ter no mínimo 6 caracteres';
+    }
+
+    setErros(novosErros);
+
+    return Object.keys(novosErros).length === 0;
+  }
+
+  function handleLogin() {
+    if (!validarFormulario()) return;
+
+    // Login no Context
+    login(email);
+
+    // Navegação protegida já fará o redirect
+    router.replace('/(tabs)');
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Login Pede Aí</Text>
-      
-      {/* Botão provisório que força o login para você poder testar */}
-      <TouchableOpacity 
-        style={styles.botao} 
-        onPress={() => login('aluno@fiap.com.br')}
+      <Text style={styles.titulo}>
+        Login
+      </Text>
+
+      <TextInput
+        placeholder="Digite seu e-mail"
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+      />
+
+      {erros.email && (
+        <Text style={styles.erro}>
+          {erros.email}
+        </Text>
+      )}
+
+      <TextInput
+        placeholder="Digite sua senha"
+        secureTextEntry
+        style={styles.input}
+        value={senha}
+        onChangeText={setSenha}
+      />
+
+      {erros.senha && (
+        <Text style={styles.erro}>
+          {erros.senha}
+        </Text>
+      )}
+
+      <TouchableOpacity
+        style={styles.botao}
+        onPress={handleLogin}
       >
-        <Text style={styles.textoBotao}>Entrar (Mock)</Text>
+        <Text style={styles.botaoTexto}>
+          Entrar
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() =>
+          router.push('/(auth)/cadastro')
+        }
+      >
+        <Text style={styles.link}>
+          Criar conta
+        </Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f6f5ff' },
-  titulo: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: colors?.primary || '#3d13f6' },
-  botao: { backgroundColor: colors?.primary || '#3d13f6', padding: 15, borderRadius: 8 },
-  textoBotao: { color: '#fff', fontWeight: 'bold' }
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24,
+    backgroundColor: '#fff',
+  },
+
+  titulo: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    padding: 14,
+    marginTop: 12,
+  },
+
+  erro: {
+    color: 'red',
+    marginTop: 5,
+    marginLeft: 3,
+  },
+
+  botao: {
+    backgroundColor: '#000',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 25,
+  },
+
+  botaoTexto: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+
+  link: {
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#007AFF',
+    fontWeight: '600',
+  },
 });

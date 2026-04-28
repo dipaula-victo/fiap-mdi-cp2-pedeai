@@ -1,9 +1,27 @@
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
+
 import { useState } from 'react';
+
 import { useRouter } from 'expo-router';
+
 import ProductCard from '../../components/CardProduto';
 import CustomButton from '../../components/BotaoCustomizado';
-import { colors, spacing, fontSize, radius } from '../../constants/theme';
+
+import {
+  colors,
+  spacing,
+  fontSize,
+  radius,
+} from '../../constants/theme';
+
+import { useAuth } from '../../context/AuthContext';
 
 const cardapio = [
   {
@@ -34,40 +52,88 @@ const cardapio = [
 
 export default function Menu() {
   const [carrinho, setCarrinho] = useState([]);
+
   const router = useRouter();
+
+  // AuthContext
+  const { usuario, logout } = useAuth();
 
   const adicionar = (item) => {
     setCarrinho([...carrinho, item]);
+
     Alert.alert('Adicionado!', item.nome);
   };
 
-  const itensDisponiveis = cardapio.filter((i) => i.disponivel);
+  // Logout
+  function handleLogout() {
+    logout();
+  }
+
+  const itensDisponiveis = cardapio.filter(
+    (i) => i.disponivel
+  );
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.titulo}>Cardápio</Text>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+    >
+      {/* Header */}
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.titulo}>
+            Cardápio
+          </Text>
 
-      {/* Estado vazio: nenhum item disponível no momento */}
+          <Text style={styles.usuario}>
+            {usuario?.email}
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={handleLogout}
+        >
+          <Text style={styles.logoutText}>
+            Logout
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Estado vazio */}
       {itensDisponiveis.length === 0 ? (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>🍽️</Text>
-          <Text style={styles.emptyTitle}>Nenhum item disponível</Text>
+          <Text style={styles.emptyIcon}>
+            🍽️
+          </Text>
+
+          <Text style={styles.emptyTitle}>
+            Nenhum item disponível
+          </Text>
+
           <Text style={styles.emptySubtitle}>
-            A cantina ainda não atualizou o cardápio. Tente novamente em breve.
+            A cantina ainda não atualizou o
+            cardápio. Tente novamente em breve.
           </Text>
         </View>
       ) : (
-        // Exibe todos os itens (disponíveis primeiro, esgotados por último)
         [...cardapio]
-          .sort((a, b) => (b.disponivel ? 1 : 0) - (a.disponivel ? 1 : 0))
+          .sort(
+            (a, b) =>
+              (b.disponivel ? 1 : 0) -
+              (a.disponivel ? 1 : 0)
+          )
           .map((item) => (
-            <ProductCard key={item.id} item={item} onAdd={adicionar} />
+            <ProductCard
+              key={item.id}
+              item={item}
+              onAdd={adicionar}
+            />
           ))
       )}
 
-      {/* Botão do carrinho com badge de quantidade */}
+      {/* Carrinho */}
       <View style={styles.carrinhoWrapper}>
-
         <CustomButton
           label={
             carrinho.length === 0
@@ -79,7 +145,11 @@ export default function Menu() {
           onPress={() =>
             router.push({
               pathname: '/cart',
-              params: { carrinho: JSON.stringify(carrinho) },
+              params: {
+                carrinho: JSON.stringify(
+                  carrinho
+                ),
+              },
             })
           }
         />
@@ -93,41 +163,74 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+
   content: {
     padding: spacing.xl,
     paddingBottom: spacing.xl * 2,
   },
+
+  // Header
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.xl,
+  },
+
   titulo: {
     fontSize: fontSize.xxl,
     color: colors.primary,
     fontWeight: 'bold',
-    marginBottom: spacing.xl,
   },
+
+  usuario: {
+    color: '#666',
+    marginTop: 4,
+  },
+
+  // Logout
+  logoutButton: {
+    backgroundColor: '#ff3b30',
+    paddingVertical: 5,
+    paddingHorizontal: 9,
+    borderRadius: radius.md,
+  },
+
+  logoutText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+
   // Estado vazio
   emptyState: {
     alignItems: 'center',
     paddingVertical: spacing.xl * 2,
   },
+
   emptyIcon: {
     fontSize: 48,
     marginBottom: spacing.lg,
   },
+
   emptyTitle: {
     fontSize: fontSize.lg,
     fontWeight: 'bold',
     color: colors.dark,
     marginBottom: spacing.sm,
   },
+
   emptySubtitle: {
     fontSize: fontSize.md,
     color: '#888',
     textAlign: 'center',
   },
-  // Badge de quantidade no botão do carrinho
+
+  // Carrinho
   carrinhoWrapper: {
     position: 'relative',
     marginTop: spacing.xl,
   },
+
   badge: {
     position: 'absolute',
     top: -8,
@@ -140,6 +243,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 10,
   },
+
   badgeText: {
     color: colors.white,
     fontSize: fontSize.sm,
