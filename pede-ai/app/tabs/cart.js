@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import CustomButton from '../components/BotaoCustomizado';
-import { colors, spacing, radius, fontSize } from '../theme';
+import CustomButton from '../../components/BotaoCustomizado';
+import { colors, spacing, radius, fontSize } from '../../constants/theme';
 
 export default function Cart() {
   const { carrinho } = useLocalSearchParams();

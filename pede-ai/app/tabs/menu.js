@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
-import ProductCard from '../components/CardProduto';
-import CustomButton from '../components/BotaoCustomizado';
-import { colors, spacing, fontSize, radius } from '../theme';
+import ProductCard from '../../components/CardProduto';
+import CustomButton from '../../components/BotaoCustomizado';
+import { colors, spacing, fontSize, radius } from '../../constants/theme';
 
 const cardapio = [
   {

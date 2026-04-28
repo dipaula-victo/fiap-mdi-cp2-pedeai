@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import OrderProgressBar from '../components/BarraProgressoPedido';
-import CustomButton from '../components/BotaoCustomizado';
-import { colors, spacing, radius, fontSize } from '../theme';
+import OrderProgressBar from '../../components/BarraProgressoPedido';
+import CustomButton from '../../components/BotaoCustomizado';
+import { colors, spacing, radius, fontSize } from '../../constants/theme';
 
 export default function Status() {
   const { total, horario } = useLocalSearchParams();
