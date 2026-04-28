@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { colors, spacing, fontSize } from '../theme';
+import { colors, spacing, fontSize } from '../constants/theme';
 
 const ETAPAS = [
   { key: 'Pedido recebido', label: 'Recebido' },

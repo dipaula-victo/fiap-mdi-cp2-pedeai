@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import BadgeStatus from './BadgeStatus';
-import { colors, spacing, radius, fontSize } from '../theme';
+import { colors, spacing, radius, fontSize } from '../constants/theme';
 
 export default function CardProduto({ item, onAdd }) {
   return (

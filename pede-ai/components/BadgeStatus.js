@@ -1,5 +1,5 @@
 import { Text, StyleSheet } from 'react-native';
-import { colors, fontSize } from '../theme';
+import { colors, fontSize } from '../constants/theme';
 
 export default function BadgeStatus({ available }) {
   return (

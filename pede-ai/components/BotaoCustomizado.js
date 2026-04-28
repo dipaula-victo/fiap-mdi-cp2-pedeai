@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { colors, spacing, radius, fontSize } from '../theme';
+import { colors, spacing, radius, fontSize } from '../constants/theme';
 
 export default function BotaoCustomizado({ label, onPress, variant = 'primary', disabled = false, style }) {
   const bg = disabled
