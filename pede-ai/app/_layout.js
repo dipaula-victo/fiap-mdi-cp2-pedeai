@@ -1,14 +1,18 @@
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { CarrinhoProvider } from '../context/CarrinhoContext';
 
 function RootLayoutNav() {
-  const { usuario } = useAuth();
+  const { usuario, carregando } = useAuth();
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
+    if (carregando) return;
+
     const inAuthGroup = segments[0] === '(auth)';
 
     if (!usuario && !inAuthGroup) {
@@ -16,7 +20,21 @@ function RootLayoutNav() {
     } else if (usuario && inAuthGroup) {
       router.replace('/(tabs)');
     }
-  }, [usuario, segments]);
+  }, [usuario, carregando, segments]);
+
+  if (carregando) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -26,7 +44,6 @@ function RootLayoutNav() {
   );
 }
 
-// O Layout agora abraça o app com os DOIS provedores de estado
 export default function Layout() {
   return (
     <AuthProvider>
