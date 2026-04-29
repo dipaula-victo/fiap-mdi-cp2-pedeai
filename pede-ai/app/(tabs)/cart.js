@@ -12,10 +12,14 @@ import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 
 import CustomButton from '../../components/BotaoCustomizado';
-import { colors, spacing, radius, fontSize } from '../../constants/theme';
+import { spacing, radius, fontSize } from '../../constants/theme';
 import { useCarrinho } from '../../context/CarrinhoContext';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function Cart() {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   const router = useRouter();
 
   const {
@@ -144,7 +148,6 @@ export default function Cart() {
     });
   };
 
-  // ─── CARRINHO VAZIO ───────────────────────────────────────────
   if (itens.length === 0) {
     return (
       <View style={styles.emptyContainer}>
@@ -153,6 +156,7 @@ export default function Cart() {
         <Text style={styles.emptySubtitle}>
           Adicione itens do cardápio para continuar
         </Text>
+
         <TouchableOpacity
           style={styles.emptyButton}
           onPress={() => router.push('/menu')}
@@ -162,7 +166,6 @@ export default function Cart() {
       </View>
     );
   }
-  // ─────────────────────────────────────────────────────────────
 
   return (
     <ScrollView
@@ -204,7 +207,7 @@ export default function Cart() {
           <TextInput
             style={styles.observacaoInput}
             placeholder="Alguma observação? (ex: sem cebola)"
-            placeholderTextColor="#aaa"
+            placeholderTextColor={colors.textSecondary}
             value={item.observacao}
             onChangeText={(texto) => atualizarObservacao(index, texto)}
             maxLength={100}
@@ -220,7 +223,10 @@ export default function Cart() {
         {['12:00', '12:30', '13:00'].map((h) => (
           <TouchableOpacity
             key={h}
-            style={[styles.opcao, horario === h && styles.opcaoSelecionada]}
+            style={[
+              styles.opcao,
+              horario === h && styles.opcaoSelecionada,
+            ]}
             onPress={() => setHorario(h)}
           >
             <Text
@@ -241,7 +247,10 @@ export default function Cart() {
         {['Pix', 'Cartão', 'Dinheiro'].map((p) => (
           <TouchableOpacity
             key={p}
-            style={[styles.opcao, pagamento === p && styles.opcaoSelecionada]}
+            style={[
+              styles.opcao,
+              pagamento === p && styles.opcaoSelecionada,
+            ]}
             onPress={() => setPagamento(p)}
           >
             <Text
@@ -265,179 +274,174 @@ export default function Cart() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
+const createStyles = (colors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  content: {
-    padding: spacing.xl,
-    paddingBottom: spacing.xl * 2,
-  },
+    content: {
+      padding: spacing.xl,
+      paddingBottom: spacing.xl * 2,
+    },
 
-  titulo: {
-    fontSize: fontSize.xxl,
-    fontWeight: 'bold',
-    color: colors.primary,
-    marginBottom: spacing.xl,
-  },
+    titulo: {
+      fontSize: fontSize.xxl,
+      fontWeight: 'bold',
+      color: colors.primary,
+      marginBottom: spacing.xl,
+    },
 
-  // ─── ESTILOS DO CARRINHO VAZIO ────────────────────────────────
-  emptyContainer: {
-    flex: 1,
-    backgroundColor: colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: spacing.xl,
-  },
+    emptyContainer: {
+      flex: 1,
+      backgroundColor: colors.background,
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: spacing.xl,
+    },
 
-  emptyIcon: {
-    fontSize: 64,
-    marginBottom: spacing.lg,
-  },
+    emptyIcon: {
+      fontSize: 64,
+      marginBottom: spacing.lg,
+    },
 
-  emptyTitle: {
-    fontSize: fontSize.xl,
-    fontWeight: 'bold',
-    color: colors.primary,
-    marginBottom: spacing.sm,
-  },
+    emptyTitle: {
+      fontSize: fontSize.xl,
+      fontWeight: 'bold',
+      color: colors.primary,
+      marginBottom: spacing.sm,
+    },
 
-  emptySubtitle: {
-    fontSize: fontSize.md,
-    color: '#888',
-    textAlign: 'center',
-    marginBottom: spacing.xxl,
-  },
+    emptySubtitle: {
+      fontSize: fontSize.md,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginBottom: spacing.xxl,
+    },
 
-  emptyButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xxl,
-    borderRadius: radius.md,
-  },
+    emptyButton: {
+      backgroundColor: colors.primary,
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.xxl,
+      borderRadius: radius.md,
+    },
 
-  emptyButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: fontSize.md,
-  },
-  // ─────────────────────────────────────────────────────────────
+    emptyButtonText: {
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: fontSize.md,
+    },
 
-  itemCard: {
-    backgroundColor: colors.white,
-    padding: spacing.md + 2,
-    marginBottom: spacing.md,
-    borderRadius: radius.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 3,
-    elevation: 1,
-  },
+    itemCard: {
+      backgroundColor: colors.surface,
+      padding: spacing.md + 2,
+      marginBottom: spacing.md,
+      borderRadius: radius.md,
+    },
 
-  itemNome: {
-    fontWeight: 'bold',
-    fontSize: fontSize.md,
-    color: colors.dark,
-  },
+    itemNome: {
+      fontWeight: 'bold',
+      fontSize: fontSize.md,
+      color: colors.textPrimary,
+    },
 
-  itemPreco: {
-    color: '#888',
-    fontSize: fontSize.sm + 1,
-    marginBottom: spacing.sm,
-  },
+    itemPreco: {
+      color: colors.textSecondary,
+      fontSize: fontSize.sm + 1,
+      marginBottom: spacing.sm,
+    },
 
-  quantidadeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
+    quantidadeRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
 
-  qtdBtn: {
-    backgroundColor: colors.qtdBg,
-    width: 30,
-    height: 30,
-    borderRadius: radius.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    qtdBtn: {
+      backgroundColor: colors.border,
+      width: 30,
+      height: 30,
+      borderRadius: radius.sm,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 
-  qtdBtnText: {
-    fontSize: fontSize.lg,
-    fontWeight: 'bold',
-    color: colors.dark,
-  },
+    qtdBtnText: {
+      fontSize: fontSize.lg,
+      fontWeight: 'bold',
+      color: colors.textPrimary,
+    },
 
-  qtdTexto: {
-    marginHorizontal: spacing.md,
-    fontWeight: 'bold',
-    fontSize: fontSize.md,
-    minWidth: 28,
-    textAlign: 'center',
-  },
+    qtdTexto: {
+      marginHorizontal: spacing.md,
+      fontWeight: 'bold',
+      fontSize: fontSize.md,
+      minWidth: 28,
+      textAlign: 'center',
+      color: colors.textPrimary,
+    },
 
-  subtotal: {
-    marginLeft: spacing.sm,
-    color: colors.secondary,
-    fontWeight: 'bold',
-  },
+    subtotal: {
+      marginLeft: spacing.sm,
+      color: colors.secondary,
+      fontWeight: 'bold',
+    },
 
-  observacaoInput: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: radius.sm,
-    padding: spacing.sm,
-    fontSize: fontSize.sm + 1,
-    color: colors.dark,
-    backgroundColor: '#fafafa',
-    marginTop: spacing.xs,
-  },
+    observacaoInput: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius.sm,
+      padding: spacing.sm,
+      fontSize: fontSize.sm + 1,
+      color: colors.textPrimary,
+      backgroundColor: colors.surface,
+      marginTop: spacing.xs,
+    },
 
-  total: {
-    marginTop: spacing.xl,
-    marginBottom: spacing.sm,
-    fontWeight: 'bold',
-    fontSize: fontSize.lg,
-    color: colors.dark,
-  },
+    total: {
+      marginTop: spacing.xl,
+      marginBottom: spacing.sm,
+      fontWeight: 'bold',
+      fontSize: fontSize.lg,
+      color: colors.textPrimary,
+    },
 
-  label: {
-    marginTop: spacing.lg,
-    marginBottom: spacing.sm,
-    fontWeight: 'bold',
-    color: colors.dark,
-  },
+    label: {
+      marginTop: spacing.lg,
+      marginBottom: spacing.sm,
+      fontWeight: 'bold',
+      color: colors.textPrimary,
+    },
 
-  opcoes: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
+    opcoes: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+    },
 
-  opcao: {
-    backgroundColor: colors.optionBg,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md + 2,
-    borderRadius: radius.md,
-  },
+    opcao: {
+      backgroundColor: colors.border,
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.md + 2,
+      borderRadius: radius.md,
+    },
 
-  opcaoSelecionada: {
-    backgroundColor: colors.primary,
-  },
+    opcaoSelecionada: {
+      backgroundColor: colors.primary,
+    },
 
-  opcaoText: {
-    color: colors.dark,
-    fontWeight: '500',
-  },
+    opcaoText: {
+      color: colors.textPrimary,
+      fontWeight: '500',
+    },
 
-  opcaoTextSelecionada: {
-    color: colors.white,
-    fontWeight: 'bold',
-  },
+    opcaoTextSelecionada: {
+      color: '#fff',
+      fontWeight: 'bold',
+    },
 
-  botaoFinalizar: {
-    marginTop: spacing.xl,
-  },
-});
+    botaoFinalizar: {
+      marginTop: spacing.xl,
+    },
+  });

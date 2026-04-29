@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  View,
   Text,
   TextInput,
   TouchableOpacity,
@@ -14,9 +13,13 @@ import {
 
 import { router } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
-import { colors, spacing, radius, fontSize } from '../../constants/theme';
+import { spacing, radius, fontSize } from '../../constants/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function Cadastro() {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   const { cadastrar } = useAuth();
 
   const [nome, setNome] = useState('');
@@ -64,7 +67,7 @@ export default function Cadastro() {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={styles.keyboard}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
@@ -128,66 +131,71 @@ export default function Cadastro() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: spacing.xl,
-    backgroundColor: colors.background,
-  },
+const createStyles = (colors) =>
+  StyleSheet.create({
+    keyboard: {
+      flex: 1,
+    },
 
-  marca: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: colors.primary,
-    textAlign: 'center',
-    marginBottom: spacing.xs,
-  },
+    container: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      padding: spacing.xl,
+      backgroundColor: colors.background,
+    },
 
-  titulo: {
-    fontSize: fontSize.lg,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: spacing.xxl,
-  },
+    marca: {
+      fontSize: 36,
+      fontWeight: 'bold',
+      color: colors.primary,
+      textAlign: 'center',
+      marginBottom: spacing.xs,
+    },
 
-  input: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.md,
-    padding: spacing.lg,
-    marginTop: spacing.md,
-    fontSize: fontSize.md,
-    color: colors.textPrimary,
-    backgroundColor: colors.surface,
-  },
+    titulo: {
+      fontSize: fontSize.lg,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginBottom: spacing.xxl,
+    },
 
-  erro: {
-    color: colors.error,
-    marginTop: spacing.xs,
-    marginLeft: spacing.xs,
-    fontSize: fontSize.sm,
-  },
+    input: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius.md,
+      padding: spacing.lg,
+      marginTop: spacing.md,
+      fontSize: fontSize.md,
+      color: colors.textPrimary,
+      backgroundColor: colors.surface,
+    },
 
-  botao: {
-    backgroundColor: colors.primary,
-    padding: spacing.lg,
-    borderRadius: radius.md,
-    marginTop: spacing.xl,
-  },
+    erro: {
+      color: colors.error,
+      marginTop: spacing.xs,
+      marginLeft: spacing.xs,
+      fontSize: fontSize.sm,
+    },
 
-  botaoTexto: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: fontSize.lg,
-  },
+    botao: {
+      backgroundColor: colors.primary,
+      padding: spacing.lg,
+      borderRadius: radius.md,
+      marginTop: spacing.xl,
+    },
 
-  link: {
-    marginTop: spacing.xl,
-    textAlign: 'center',
-    color: colors.primary,
-    fontWeight: '600',
-    fontSize: fontSize.md,
-  },
-});
+    botaoTexto: {
+      color: '#fff',
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontSize: fontSize.lg,
+    },
+
+    link: {
+      marginTop: spacing.xl,
+      textAlign: 'center',
+      color: colors.primary,
+      fontWeight: '600',
+      fontSize: fontSize.md,
+    },
+  });

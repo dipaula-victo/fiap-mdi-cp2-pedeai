@@ -1,4 +1,4 @@
-export const colors = {
+export const lightColors = {
   primary: '#ED1C6F',
   primaryDark: '#C4005F',   
   secondary: '#F5A623',     
@@ -11,6 +11,22 @@ export const colors = {
   error: '#DC3545',
   disabled: '#CCCCCC',
   border: '#E0E0E0',
+  cardBackground: '#FFFFFF',
+};
+
+export const darkColors = {
+  primary: '#ED1C6F',
+  primaryDark: '#C4005F',   
+  secondary: '#a36d16',     
+  background: '#1f1f1f',
+  surface: '#292929',
+  textPrimary: '#FFFFFF',
+  textSecondary: '#b8b8b8',
+  textLight: '#FFFFFF',
+  success: '#28A745',
+  error: '#DC3545',
+  disabled: '#464646',
+  border: '#424242',
   cardBackground: '#FFFFFF',
 };
 

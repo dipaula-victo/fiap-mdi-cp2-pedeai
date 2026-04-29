@@ -14,9 +14,13 @@ import {
 
 import { router } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
-import { colors, spacing, radius, fontSize } from '../../constants/theme';
+import { spacing, radius, fontSize } from '../../constants/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function Login() {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   const { login } = useAuth();
 
   const [email, setEmail] = useState('');
@@ -58,7 +62,7 @@ export default function Login() {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={styles.keyboard}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
@@ -99,7 +103,7 @@ export default function Login() {
           <ActivityIndicator
             size="large"
             color={colors.primary}
-            style={{ marginTop: spacing.xl }}
+            style={styles.loading}
           />
         ) : (
           <TouchableOpacity style={styles.botao} onPress={handleLogin}>
@@ -115,81 +119,90 @@ export default function Login() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: spacing.xl,
-    backgroundColor: colors.background,
-  },
+const createStyles = (colors) =>
+  StyleSheet.create({
+    keyboard: {
+      flex: 1,
+    },
 
-  marca: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: colors.primary,
-    textAlign: 'center',
-    marginBottom: spacing.xs,
-  },
+    container: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      padding: spacing.xl,
+      backgroundColor: colors.background,
+    },
 
-  titulo: {
-    fontSize: fontSize.lg,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: spacing.xxl,
-  },
+    marca: {
+      fontSize: 36,
+      fontWeight: 'bold',
+      color: colors.primary,
+      textAlign: 'center',
+      marginBottom: spacing.xs,
+    },
 
-  caixaErro: {
-    backgroundColor: '#ffe5e5',
-    borderWidth: 1,
-    borderColor: '#ff4d4d',
-    borderRadius: radius.md,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-  },
+    titulo: {
+      fontSize: fontSize.lg,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginBottom: spacing.xxl,
+    },
 
-  erroLogin: {
-    color: '#b00020',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
+    caixaErro: {
+      backgroundColor: colors.errorBoxBackground || '#ffe5e5',
+      borderWidth: 1,
+      borderColor: colors.errorBoxBorder || '#ff4d4d',
+      borderRadius: radius.md,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+    },
 
-  input: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.md,
-    padding: spacing.lg,
-    marginTop: spacing.md,
-    fontSize: fontSize.md,
-    color: colors.textPrimary,
-    backgroundColor: colors.surface,
-  },
+    erroLogin: {
+      color: colors.error,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
 
-  erro: {
-    color: colors.error,
-    marginTop: spacing.xs,
-    marginLeft: spacing.xs,
-    fontSize: fontSize.sm,
-  },
+    input: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius.md,
+      padding: spacing.lg,
+      marginTop: spacing.md,
+      fontSize: fontSize.md,
+      color: colors.textPrimary,
+      backgroundColor: colors.surface,
+    },
 
-  botao: {
-    backgroundColor: colors.primary,
-    padding: spacing.lg,
-    borderRadius: radius.md,
-    marginTop: spacing.xl,
-  },
+    erro: {
+      color: colors.error,
+      marginTop: spacing.xs,
+      marginLeft: spacing.xs,
+      fontSize: fontSize.sm,
+    },
 
-  botaoTexto: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: fontSize.lg,
-  },
+    botao: {
+      backgroundColor: colors.primary,
+      padding: spacing.lg,
+      borderRadius: radius.md,
+      marginTop: spacing.xl,
+    },
 
-  link: {
-    marginTop: spacing.xl,
-    textAlign: 'center',
-    color: colors.primary,
-    fontWeight: '600',
-    fontSize: fontSize.md,
-  },
-});
+    botaoTexto: {
+      color: '#fff',
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontSize: fontSize.lg,
+    },
+
+    link: {
+      marginTop: spacing.xl,
+      textAlign: 'center',
+      color: colors.primary,
+      fontWeight: '600',
+      fontSize: fontSize.md,
+    },
+
+    loading: {
+      marginTop: spacing.xl,
+    },
+  });

@@ -12,12 +12,8 @@ import { useRouter } from 'expo-router';
 import ProductCard from '../../components/CardProduto';
 import CustomButton from '../../components/BotaoCustomizado';
 
-import {
-  colors,
-  spacing,
-  fontSize,
-  radius,
-} from '../../constants/theme';
+import { spacing, fontSize, radius } from '../../constants/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 import { useAuth } from '../../context/AuthContext';
 import { useCarrinho } from '../../context/CarrinhoContext';
@@ -50,14 +46,12 @@ const cardapio = [
 ];
 
 export default function Menu() {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   const router = useRouter();
-
   const { usuario, logout } = useAuth();
-
-  const {
-    carrinho,
-    adicionarAoCarrinho,
-  } = useCarrinho();
+  const { carrinho, adicionarAoCarrinho } = useCarrinho();
 
   const adicionar = (item) => {
     adicionarAoCarrinho(item);
@@ -72,9 +66,7 @@ export default function Menu() {
     logout();
   }
 
-  const itensDisponiveis = cardapio.filter(
-    (item) => item.disponivel
-  );
+  const itensDisponiveis = cardapio.filter((item) => item.disponivel);
 
   return (
     <ScrollView
@@ -83,9 +75,7 @@ export default function Menu() {
     >
       <View style={styles.header}>
         <View>
-          <Text style={styles.titulo}>
-            Cardápio
-          </Text>
+          <Text style={styles.titulo}>Cardápio</Text>
 
           <Text style={styles.usuario}>
             Olá, {usuario?.nome || 'Aluno'}
@@ -96,17 +86,13 @@ export default function Menu() {
           style={styles.logoutButton}
           onPress={handleLogout}
         >
-          <Text style={styles.logoutText}>
-            Logout
-          </Text>
+          <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
 
       {itensDisponiveis.length === 0 ? (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>
-            🍽️
-          </Text>
+          <Text style={styles.emptyIcon}>🍽️</Text>
 
           <Text style={styles.emptyTitle}>
             Nenhum item disponível
@@ -148,72 +134,73 @@ export default function Menu() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
+const createStyles = (colors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  content: {
-    padding: spacing.xl,
-    paddingBottom: spacing.xl * 2,
-  },
+    content: {
+      padding: spacing.xl,
+      paddingBottom: spacing.xl * 2,
+    },
 
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.xl,
-  },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing.xl,
+    },
 
-  titulo: {
-    fontSize: fontSize.xxl,
-    color: colors.primary,
-    fontWeight: 'bold',
-  },
+    titulo: {
+      fontSize: fontSize.xxl,
+      color: colors.primary,
+      fontWeight: 'bold',
+    },
 
-  usuario: {
-    color: '#666',
-    marginTop: 4,
-    fontSize: 14,
-  },
+    usuario: {
+      color: colors.textSecondary,
+      marginTop: 4,
+      fontSize: 14,
+    },
 
-  logoutButton: {
-    backgroundColor: '#ff3b30',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: radius.md,
-  },
+    logoutButton: {
+      backgroundColor: colors.error,
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+      borderRadius: radius.md,
+    },
 
-  logoutText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
+    logoutText: {
+      color: '#fff',
+      fontWeight: 'bold',
+    },
 
-  emptyState: {
-    alignItems: 'center',
-    paddingVertical: spacing.xl * 2,
-  },
+    emptyState: {
+      alignItems: 'center',
+      paddingVertical: spacing.xl * 2,
+    },
 
-  emptyIcon: {
-    fontSize: 48,
-    marginBottom: spacing.lg,
-  },
+    emptyIcon: {
+      fontSize: 48,
+      marginBottom: spacing.lg,
+    },
 
-  emptyTitle: {
-    fontSize: fontSize.lg,
-    fontWeight: 'bold',
-    color: colors.dark,
-    marginBottom: spacing.sm,
-  },
+    emptyTitle: {
+      fontSize: fontSize.lg,
+      fontWeight: 'bold',
+      color: colors.textPrimary,
+      marginBottom: spacing.sm,
+    },
 
-  emptySubtitle: {
-    fontSize: fontSize.md,
-    color: '#888',
-    textAlign: 'center',
-  },
+    emptySubtitle: {
+      fontSize: fontSize.md,
+      color: colors.textSecondary,
+      textAlign: 'center',
+    },
 
-  carrinhoWrapper: {
-    marginTop: spacing.xl,
-  },
-});
+    carrinhoWrapper: {
+      marginTop: spacing.xl,
+    },
+  });

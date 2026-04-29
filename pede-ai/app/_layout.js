@@ -4,6 +4,7 @@ import { ActivityIndicator, View } from 'react-native';
 
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { CarrinhoProvider } from '../context/CarrinhoContext';
+import { ThemeProvider } from '../context/ThemeContext';
 
 function RootLayoutNav() {
   const { usuario, carregando } = useAuth();
@@ -46,10 +47,13 @@ function RootLayoutNav() {
 
 export default function Layout() {
   return (
-    <AuthProvider>
-      <CarrinhoProvider>
-        <RootLayoutNav />
-      </CarrinhoProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <CarrinhoProvider>
+          <RootLayoutNav />
+        </CarrinhoProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
+

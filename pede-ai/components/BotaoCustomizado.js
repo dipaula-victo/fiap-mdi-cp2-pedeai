@@ -1,7 +1,18 @@
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { colors, spacing, radius, fontSize } from '../constants/theme';
 
-export default function BotaoCustomizado({ label, onPress, variant = 'primary', disabled = false, style }) {
+import { spacing, radius, fontSize } from '../constants/theme';
+import { useTheme } from '../context/ThemeContext';
+
+export default function BotaoCustomizado({
+  label,
+  onPress,
+  variant = 'primary',
+  disabled = false,
+  style,
+}) {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   const bg = disabled
     ? colors.disabled
     : variant === 'secondary'
@@ -20,17 +31,19 @@ export default function BotaoCustomizado({ label, onPress, variant = 'primary', 
   );
 }
 
-const styles = StyleSheet.create({
-  button: {
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  label: {
-    color: colors.white,
-    fontWeight: 'bold',
-    fontSize: fontSize.md,
-    textAlign: 'center',
-  },
-});
+const createStyles = (colors) =>
+  StyleSheet.create({
+    button: {
+      padding: spacing.lg,
+      borderRadius: radius.lg,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+
+    label: {
+      color: colors.textPrimary,
+      fontWeight: 'bold',
+      fontSize: fontSize.md,
+      textAlign: 'center',
+    },
+  });
