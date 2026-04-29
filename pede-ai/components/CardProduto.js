@@ -5,7 +5,7 @@ import { colors, spacing, radius, fontSize } from '../constants/theme';
 export default function CardProduto({ item, onAdd }) {
   return (
     <View style={styles.card}>
-      <Image source={{ uri: item.imagem }} style={styles.image} />
+<Image source={item.imagem} style={styles.image} />
 
       <View style={{ flex: 1 }}>
         <Text style={styles.nome}>{item.nome}</Text>

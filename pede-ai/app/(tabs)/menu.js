@@ -28,7 +28,7 @@ const cardapio = [
     nome: 'Coxinha de Frango',
     descricao: 'Massa crocante com recheio',
     preco: 7.5,
-    imagem: 'https://picsum.photos/seed/coxinha/100',
+    imagem: require('../../assets/images/coxinha.jpg'),
     disponivel: true,
   },
   {
@@ -36,7 +36,7 @@ const cardapio = [
     nome: 'Pão de Queijo',
     descricao: 'Assado na hora',
     preco: 5,
-    imagem: 'https://picsum.photos/seed/pao/100',
+    imagem: require('../../assets/images/paodequeijo.jpg'),
     disponivel: true,
   },
   {
@@ -44,7 +44,7 @@ const cardapio = [
     nome: 'Suco de Laranja',
     descricao: 'Copo 500ml, natural sem açúcar',
     preco: 8,
-    imagem: 'https://picsum.photos/seed/suco/100',
+    imagem: require('../../assets/images/sucoLaranja.jpg'),
     disponivel: false,
   },
 ];
