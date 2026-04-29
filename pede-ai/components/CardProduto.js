@@ -33,37 +33,38 @@ export default function CardProduto({ item, onAdd }) {
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 10,
+    backgroundColor: colors.surface,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+    borderRadius: radius.md,
   },
   image: {
     width: 80,
     height: 80,
-    marginRight: 10,
+    marginRight: spacing.md,
   },
   nome: {
     fontWeight: 'bold',
+    color: colors.textPrimary,
   },
   linha: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 5,
+    marginTop: spacing.sm,
   },
   preco: {
-    color: '#f769b2',
+    color: colors.primary,
     fontWeight: 'bold',
   },
   botao: {
-    backgroundColor: '#3d13f6',
-    padding: 6,
-    marginTop: 8,
-    borderRadius: 5,
+    backgroundColor: colors.primary,
+    padding: spacing.sm,
+    marginTop: spacing.sm,
+    borderRadius: radius.sm,
   },
   botaoDesativado: {
-    backgroundColor: '#ccc',
+    backgroundColor: colors.disabled,
   },
   textoBotao: {
     color: '#fff',

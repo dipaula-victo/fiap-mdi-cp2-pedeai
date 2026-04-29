@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, spacing, radius, fontSize } from '../../constants/theme';
 
 export default function Home() {
   const router = useRouter();
@@ -24,29 +25,30 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f6f5ff',
+    backgroundColor: colors.background,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: spacing.xl,
   },
   titulo: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#3d13f6',
-    marginBottom: 10,
+    color: colors.primary,
+    marginBottom: spacing.sm,
   },
   subtitulo: {
-    fontSize: 16,
-    color: '#08011e',
-    marginBottom: 30,
+    fontSize: fontSize.lg,
+    color: colors.textSecondary,
+    marginBottom: spacing.xxl,
   },
   botao: {
-    backgroundColor: '#3d13f6',
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: colors.primary,
+    padding: spacing.lg,
+    borderRadius: radius.md,
   },
   textoBotao: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: fontSize.md,
   },
 });
