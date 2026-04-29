@@ -17,23 +17,19 @@ export default function Login() {
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-
+  const [erroLogin, setErroLogin] = useState('');
   const [erros, setErros] = useState({});
 
   function validarFormulario() {
     let novosErros = {};
-
-    // Regex de email
     const emailRegex = /\S+@\S+\.\S+/;
 
     if (!emailRegex.test(email)) {
-      novosErros.email =
-        'Digite um e-mail válido';
+      novosErros.email = 'Digite um e-mail válido';
     }
 
     if (senha.length < 6) {
-      novosErros.senha =
-        'A senha deve ter no mínimo 6 caracteres';
+      novosErros.senha = 'A senha deve ter no mínimo 6 caracteres';
     }
 
     setErros(novosErros);
@@ -41,34 +37,42 @@ export default function Login() {
     return Object.keys(novosErros).length === 0;
   }
 
-  function handleLogin() {
+  async function handleLogin() {
+    setErroLogin('');
+
     if (!validarFormulario()) return;
 
-    // Login no Context
-    login(email);
+    try {
+      await login(email.trim(), senha);
 
-    // Navegação protegida já fará o redirect
-    router.replace('/(tabs)');
+      router.replace('/(tabs)');
+    } catch (error) {
+      setErroLogin(error.message || 'Erro ao fazer login');
+    }
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>
-        Login
-      </Text>
+      <Text style={styles.titulo}>Login</Text>
+
+      {erroLogin ? (
+        <View style={styles.caixaErro}>
+          <Text style={styles.erroLogin}>
+            {erroLogin}
+          </Text>
+        </View>
+      ) : null}
 
       <TextInput
         placeholder="Digite seu e-mail"
         style={styles.input}
         value={email}
         onChangeText={setEmail}
+        autoCapitalize="none"
+        keyboardType="email-address"
       />
 
-      {erros.email && (
-        <Text style={styles.erro}>
-          {erros.email}
-        </Text>
-      )}
+      {erros.email && <Text style={styles.erro}>{erros.email}</Text>}
 
       <TextInput
         placeholder="Digite sua senha"
@@ -78,29 +82,19 @@ export default function Login() {
         onChangeText={setSenha}
       />
 
-      {erros.senha && (
-        <Text style={styles.erro}>
-          {erros.senha}
-        </Text>
-      )}
+      {erros.senha && <Text style={styles.erro}>{erros.senha}</Text>}
 
       <TouchableOpacity
         style={styles.botao}
         onPress={handleLogin}
       >
-        <Text style={styles.botaoTexto}>
-          Entrar
-        </Text>
+        <Text style={styles.botaoTexto}>Entrar</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() =>
-          router.push('/(auth)/cadastro')
-        }
+        onPress={() => router.push('/(auth)/cadastro')}
       >
-        <Text style={styles.link}>
-          Criar conta
-        </Text>
+        <Text style={styles.link}>Criar conta</Text>
       </TouchableOpacity>
     </View>
   );
@@ -119,6 +113,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
+  },
+
+  caixaErro: {
+    backgroundColor: '#ffe5e5',
+    borderWidth: 1,
+    borderColor: '#ff4d4d',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 12,
+  },
+
+  erroLogin: {
+    color: '#b00020',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 
   input: {
