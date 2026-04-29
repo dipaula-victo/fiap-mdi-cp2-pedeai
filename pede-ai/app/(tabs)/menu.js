@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { useState } from 'react';
-
 import { useRouter } from 'expo-router';
 
 import ProductCard from '../../components/CardProduto';
@@ -22,6 +20,7 @@ import {
 } from '../../constants/theme';
 
 import { useAuth } from '../../context/AuthContext';
+import { useCarrinho } from '../../context/CarrinhoContext';
 
 const cardapio = [
   {
@@ -51,26 +50,30 @@ const cardapio = [
 ];
 
 export default function Menu() {
-  const [carrinho, setCarrinho] = useState([]);
-
   const router = useRouter();
 
-  // AuthContext
   const { usuario, logout } = useAuth();
 
-  const adicionar = (item) => {
-    setCarrinho([...carrinho, item]);
+  const {
+    carrinho,
+    adicionarAoCarrinho,
+  } = useCarrinho();
 
-    Alert.alert('Adicionado!', item.nome);
+  const adicionar = (item) => {
+    adicionarAoCarrinho(item);
+
+    Alert.alert(
+      'Produto adicionado',
+      `${item.nome} foi para o carrinho`
+    );
   };
 
-  // Logout
   function handleLogout() {
     logout();
   }
 
   const itensDisponiveis = cardapio.filter(
-    (i) => i.disponivel
+    (item) => item.disponivel
   );
 
   return (
@@ -78,7 +81,6 @@ export default function Menu() {
       style={styles.container}
       contentContainerStyle={styles.content}
     >
-      {/* Header */}
       <View style={styles.header}>
         <View>
           <Text style={styles.titulo}>
@@ -86,7 +88,7 @@ export default function Menu() {
           </Text>
 
           <Text style={styles.usuario}>
-            {usuario?.email}
+            Olá, {usuario?.nome || 'Aluno'}
           </Text>
         </View>
 
@@ -100,7 +102,6 @@ export default function Menu() {
         </TouchableOpacity>
       </View>
 
-      {/* Estado vazio */}
       {itensDisponiveis.length === 0 ? (
         <View style={styles.emptyState}>
           <Text style={styles.emptyIcon}>
@@ -112,8 +113,7 @@ export default function Menu() {
           </Text>
 
           <Text style={styles.emptySubtitle}>
-            A cantina ainda não atualizou o
-            cardápio. Tente novamente em breve.
+            A cantina ainda não atualizou o cardápio.
           </Text>
         </View>
       ) : (
@@ -132,7 +132,6 @@ export default function Menu() {
           ))
       )}
 
-      {/* Carrinho */}
       <View style={styles.carrinhoWrapper}>
         <CustomButton
           label={
@@ -142,16 +141,7 @@ export default function Menu() {
           }
           variant="secondary"
           disabled={carrinho.length === 0}
-          onPress={() =>
-            router.push({
-              pathname: '/cart',
-              params: {
-                carrinho: JSON.stringify(
-                  carrinho
-                ),
-              },
-            })
-          }
+          onPress={() => router.push('/cart')}
         />
       </View>
     </ScrollView>
@@ -169,7 +159,6 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.xl * 2,
   },
 
-  // Header
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -186,13 +175,13 @@ const styles = StyleSheet.create({
   usuario: {
     color: '#666',
     marginTop: 4,
+    fontSize: 14,
   },
 
-  // Logout
   logoutButton: {
     backgroundColor: '#ff3b30',
-    paddingVertical: 5,
-    paddingHorizontal: 9,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
     borderRadius: radius.md,
   },
 
@@ -201,7 +190,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  // Estado vazio
   emptyState: {
     alignItems: 'center',
     paddingVertical: spacing.xl * 2,
@@ -225,28 +213,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  // Carrinho
   carrinhoWrapper: {
-    position: 'relative',
     marginTop: spacing.xl,
-  },
-
-  badge: {
-    position: 'absolute',
-    top: -8,
-    right: -8,
-    backgroundColor: colors.primary,
-    borderRadius: 12,
-    width: 24,
-    height: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 10,
-  },
-
-  badgeText: {
-    color: colors.white,
-    fontSize: fontSize.sm,
-    fontWeight: 'bold',
   },
 });
