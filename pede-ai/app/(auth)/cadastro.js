@@ -6,12 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 
 import { router } from 'expo-router';
-
 import { useAuth } from '../../context/AuthContext';
+import { colors, spacing, radius, fontSize } from '../../constants/theme';
 
 export default function Cadastro() {
   const { cadastrar } = useAuth();
@@ -43,7 +45,6 @@ export default function Cadastro() {
     }
 
     setErros(novosErros);
-
     return Object.keys(novosErros).length === 0;
   }
 
@@ -53,11 +54,7 @@ export default function Cadastro() {
     try {
       await cadastrar(nome.trim(), email.trim(), senha);
 
-      Alert.alert(
-        'Cadastro realizado!',
-        'Agora faça login com sua conta.'
-      );
-
+      Alert.alert('Cadastro realizado!', 'Agora faça login com sua conta.');
       router.replace('/(auth)/login');
     } catch (error) {
       Alert.alert('Erro no cadastro', error.message);
@@ -65,114 +62,131 @@ export default function Cadastro() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>Cadastro</Text>
-
-      <TextInput
-        placeholder="Digite seu nome"
-        style={styles.input}
-        value={nome}
-        onChangeText={setNome}
-      />
-
-      {erros.nome && <Text style={styles.erro}>{erros.nome}</Text>}
-
-      <TextInput
-        placeholder="Digite seu e-mail"
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
-
-      {erros.email && <Text style={styles.erro}>{erros.email}</Text>}
-
-      <TextInput
-        placeholder="Digite sua senha"
-        secureTextEntry
-        style={styles.input}
-        value={senha}
-        onChangeText={setSenha}
-      />
-
-      {erros.senha && <Text style={styles.erro}>{erros.senha}</Text>}
-
-      <TextInput
-        placeholder="Confirme sua senha"
-        secureTextEntry
-        style={styles.input}
-        value={confirmarSenha}
-        onChangeText={setConfirmarSenha}
-      />
-
-      {erros.confirmarSenha && (
-        <Text style={styles.erro}>{erros.confirmarSenha}</Text>
-      )}
-
-      <TouchableOpacity
-        style={styles.botao}
-        onPress={handleCadastro}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.botaoTexto}>Cadastrar</Text>
-      </TouchableOpacity>
+        <Text style={styles.marca}>PedeAí</Text>
+        <Text style={styles.titulo}>Criar conta</Text>
 
-      <TouchableOpacity
-        onPress={() => router.replace('/(auth)/login')}
-      >
-        <Text style={styles.link}>Já tenho conta</Text>
-      </TouchableOpacity>
-    </View>
+        <TextInput
+          placeholder="Digite seu nome"
+          placeholderTextColor={colors.textSecondary}
+          style={styles.input}
+          value={nome}
+          onChangeText={setNome}
+        />
+        {erros.nome && <Text style={styles.erro}>{erros.nome}</Text>}
+
+        <TextInput
+          placeholder="Digite seu e-mail"
+          placeholderTextColor={colors.textSecondary}
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+        />
+        {erros.email && <Text style={styles.erro}>{erros.email}</Text>}
+
+        <TextInput
+          placeholder="Digite sua senha"
+          placeholderTextColor={colors.textSecondary}
+          secureTextEntry
+          style={styles.input}
+          value={senha}
+          onChangeText={setSenha}
+        />
+        {erros.senha && <Text style={styles.erro}>{erros.senha}</Text>}
+
+        <TextInput
+          placeholder="Confirme sua senha"
+          placeholderTextColor={colors.textSecondary}
+          secureTextEntry
+          style={styles.input}
+          value={confirmarSenha}
+          onChangeText={setConfirmarSenha}
+        />
+        {erros.confirmarSenha && (
+          <Text style={styles.erro}>{erros.confirmarSenha}</Text>
+        )}
+
+        <TouchableOpacity style={styles.botao} onPress={handleCadastro}>
+          <Text style={styles.botaoTexto}>Cadastrar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => router.replace('/(auth)/login')}>
+          <Text style={styles.link}>Já tenho conta — Entrar</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
-    padding: 24,
-    backgroundColor: '#fff',
+    padding: spacing.xl,
+    backgroundColor: colors.background,
+  },
+
+  marca: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: colors.primary,
+    textAlign: 'center',
+    marginBottom: spacing.xs,
   },
 
   titulo: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 30,
+    fontSize: fontSize.lg,
+    color: colors.textSecondary,
     textAlign: 'center',
+    marginBottom: spacing.xxl,
   },
 
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    padding: 14,
-    marginTop: 12,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    padding: spacing.lg,
+    marginTop: spacing.md,
+    fontSize: fontSize.md,
+    color: colors.textPrimary,
+    backgroundColor: colors.surface,
   },
 
   erro: {
-    color: 'red',
-    marginTop: 5,
-    marginLeft: 3,
+    color: colors.error,
+    marginTop: spacing.xs,
+    marginLeft: spacing.xs,
+    fontSize: fontSize.sm,
   },
 
   botao: {
-    backgroundColor: '#000',
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 25,
+    backgroundColor: colors.primary,
+    padding: spacing.lg,
+    borderRadius: radius.md,
+    marginTop: spacing.xl,
   },
 
   botaoTexto: {
     color: '#fff',
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: fontSize.lg,
   },
 
   link: {
-    marginTop: 20,
+    marginTop: spacing.xl,
     textAlign: 'center',
-    color: '#007AFF',
+    color: colors.primary,
     fontWeight: '600',
+    fontSize: fontSize.md,
   },
 });

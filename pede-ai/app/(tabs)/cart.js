@@ -144,6 +144,26 @@ export default function Cart() {
     });
   };
 
+  // ─── CARRINHO VAZIO ───────────────────────────────────────────
+  if (itens.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyIcon}>🛒</Text>
+        <Text style={styles.emptyTitle}>Seu carrinho está vazio</Text>
+        <Text style={styles.emptySubtitle}>
+          Adicione itens do cardápio para continuar
+        </Text>
+        <TouchableOpacity
+          style={styles.emptyButton}
+          onPress={() => router.push('/menu')}
+        >
+          <Text style={styles.emptyButtonText}>Ver Cardápio</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  // ─────────────────────────────────────────────────────────────
+
   return (
     <ScrollView
       style={styles.container}
@@ -151,80 +171,56 @@ export default function Cart() {
     >
       <Text style={styles.titulo}>Carrinho</Text>
 
-      {itens.length === 0 ? (
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>🛒</Text>
-          <Text style={styles.emptyText}>
-            Seu carrinho está vazio
+      {itens.map((item, index) => (
+        <View key={index} style={styles.itemCard}>
+          <Text style={styles.itemNome}>{item.nome}</Text>
+
+          <Text style={styles.itemPreco}>
+            R$ {item.preco.toFixed(2)} cada
           </Text>
-        </View>
-      ) : (
-        itens.map((item, index) => (
-          <View key={index} style={styles.itemCard}>
-            <Text style={styles.itemNome}>
-              {item.nome}
+
+          <View style={styles.quantidadeRow}>
+            <TouchableOpacity
+              onPress={() => diminuir(index)}
+              style={styles.qtdBtn}
+            >
+              <Text style={styles.qtdBtnText}>−</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.qtdTexto}>x{item.quantidade}</Text>
+
+            <TouchableOpacity
+              onPress={() => aumentar(index)}
+              style={styles.qtdBtn}
+            >
+              <Text style={styles.qtdBtnText}>+</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.subtotal}>
+              = R$ {(item.preco * item.quantidade).toFixed(2)}
             </Text>
-
-            <Text style={styles.itemPreco}>
-              R$ {item.preco.toFixed(2)} cada
-            </Text>
-
-            <View style={styles.quantidadeRow}>
-              <TouchableOpacity
-                onPress={() => diminuir(index)}
-                style={styles.qtdBtn}
-              >
-                <Text style={styles.qtdBtnText}>
-                  −
-                </Text>
-              </TouchableOpacity>
-
-              <Text style={styles.qtdTexto}>
-                x{item.quantidade}
-              </Text>
-
-              <TouchableOpacity
-                onPress={() => aumentar(index)}
-                style={styles.qtdBtn}
-              >
-                <Text style={styles.qtdBtnText}>
-                  +
-                </Text>
-              </TouchableOpacity>
-
-              <Text style={styles.subtotal}>
-                = R$ {(item.preco * item.quantidade).toFixed(2)}
-              </Text>
-            </View>
-
-            <TextInput
-              style={styles.observacaoInput}
-              placeholder="Alguma observação? (ex: sem cebola)"
-              placeholderTextColor="#aaa"
-              value={item.observacao}
-              onChangeText={(texto) => atualizarObservacao(index, texto)}
-              maxLength={100}
-            />
           </View>
-        ))
-      )}
 
-      <Text style={styles.total}>
-        Total: R$ {total.toFixed(2)}
-      </Text>
+          <TextInput
+            style={styles.observacaoInput}
+            placeholder="Alguma observação? (ex: sem cebola)"
+            placeholderTextColor="#aaa"
+            value={item.observacao}
+            onChangeText={(texto) => atualizarObservacao(index, texto)}
+            maxLength={100}
+          />
+        </View>
+      ))}
 
-      <Text style={styles.label}>
-        Horário de retirada:
-      </Text>
+      <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
+
+      <Text style={styles.label}>Horário de retirada:</Text>
 
       <View style={styles.opcoes}>
         {['12:00', '12:30', '13:00'].map((h) => (
           <TouchableOpacity
             key={h}
-            style={[
-              styles.opcao,
-              horario === h && styles.opcaoSelecionada,
-            ]}
+            style={[styles.opcao, horario === h && styles.opcaoSelecionada]}
             onPress={() => setHorario(h)}
           >
             <Text
@@ -239,18 +235,13 @@ export default function Cart() {
         ))}
       </View>
 
-      <Text style={styles.label}>
-        Forma de pagamento:
-      </Text>
+      <Text style={styles.label}>Forma de pagamento:</Text>
 
       <View style={styles.opcoes}>
         {['Pix', 'Cartão', 'Dinheiro'].map((p) => (
           <TouchableOpacity
             key={p}
-            style={[
-              styles.opcao,
-              pagamento === p && styles.opcaoSelecionada,
-            ]}
+            style={[styles.opcao, pagamento === p && styles.opcaoSelecionada]}
             onPress={() => setPagamento(p)}
           >
             <Text
@@ -292,20 +283,47 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
 
-  emptyState: {
+  // ─── ESTILOS DO CARRINHO VAZIO ────────────────────────────────
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: colors.background,
     alignItems: 'center',
-    paddingVertical: spacing.xl * 2,
+    justifyContent: 'center',
+    padding: spacing.xl,
   },
 
   emptyIcon: {
-    fontSize: 40,
-    marginBottom: spacing.md,
+    fontSize: 64,
+    marginBottom: spacing.lg,
   },
 
-  emptyText: {
+  emptyTitle: {
+    fontSize: fontSize.xl,
+    fontWeight: 'bold',
+    color: colors.primary,
+    marginBottom: spacing.sm,
+  },
+
+  emptySubtitle: {
     fontSize: fontSize.md,
     color: '#888',
+    textAlign: 'center',
+    marginBottom: spacing.xxl,
   },
+
+  emptyButton: {
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xxl,
+    borderRadius: radius.md,
+  },
+
+  emptyButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: fontSize.md,
+  },
+  // ─────────────────────────────────────────────────────────────
 
   itemCard: {
     backgroundColor: colors.white,
