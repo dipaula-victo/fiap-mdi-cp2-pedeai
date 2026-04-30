@@ -113,7 +113,7 @@ npx expo start
 
 ## 🎥 Demonstração
 
-(https://www.youtube.com/shorts/afwWdeU9ymQ)
+(https://youtube.com/shorts/WRHEpuUor3E)
 
 
 ---
@@ -131,11 +131,7 @@ Autenticação → Início → Cardápio → Carrinho → Status do Pedido
 
 ## 🗂️ Estrutura do Projeto
 
-```bash
-
-## 🗂️ Estrutura do Projeto
-
-```bash
+```
 FIAP-MDI-CP2-PEDEAI/
 ├── pede-ai/
 │   ├── .expo/
@@ -175,7 +171,6 @@ FIAP-MDI-CP2-PEDEAI/
 │
 ├── LICENSE
 └── README.md
-
 ```
 
 ## 🌐 Contexts
@@ -218,8 +213,8 @@ Utilizado para salvar:
 ### 🔒 Navegação protegida
 
 Implementada em _layout.js:
-*Usuário não logado → redirecionado para login
-*Usuário logado → acesso liberado ao app
+* Usuário não logado → redirecionado para login
+* Usuário logado → acesso liberado ao app
 
 ---
 
@@ -229,9 +224,9 @@ Implementada em _layout.js:
 Sistema de alternância entre modo claro e escuro
 
 ### 🎯 Por que escolhemos:
-Melhora a experiência do usuário
-Aumenta acessibilidade
-Torna o app mais moderno
+Melhora a experiência do usuário   
+Aumenta acessibilidade   
+Torna o app mais moderno   
 ### ⚙️ Como foi feito:
 * ThemeContext
 * Uso de useTheme()
