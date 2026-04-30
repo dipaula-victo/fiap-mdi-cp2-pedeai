@@ -12,26 +12,83 @@ O **PedeAí** é um aplicativo mobile desenvolvido com **React Native + Expo** q
 
 ---
 
+## 🔄 Evolução do CP1 → CP2
+### CP1:
+* Navegação entre telas
+* Interface funcional
+* Carrinho e fluxo de pedido
+
+### CP2 (NOVO):
+* Sistema completo de autenticação
+* Persistência com AsyncStorage
+* Context API para estado global
+* Dark Mode (diferencial)
+
+---
+
 ## 👨‍💻 Equipe
 
-* Djalma Moreira de Andrade Filho
-* Felipe Paes de Barros Muller Carioba
-* Lucas Rodrigues de Queiroz
-* Matheus Gushi Morioka
-* Victor Hugo de Paula
+| Nome                                 | RM       |
+| ------------------------------------ | -------- |
+| Djalma Moreira de Andrade Filho      | RM555530 |
+| Felipe Paes de Barros Muller Carioba | RM558447 |
+| Lucas Rodrigues de Queiroz           | RM556323 |
+| Matheus Gushi Morioka                | RM556935 |
+| Victor Hugo de Paula                 | RM554787 |
 
 ---
 
 ## ⚙️ Funcionalidades
 
-* 🏠 Tela inicial de boas-vindas
-* 🍔 Cardápio com imagens, preço e status de disponibilidade
-* 🛒 Carrinho com controle de quantidade
-* 📝 Observações personalizadas por item
-* ⏰ Seleção do horário de retirada
-* 💳 Pagamento (Pix, Cartão e Dinheiro)
-* 📊 Acompanhamento do pedido em tempo real
-* ✅ Finalização com opção de novo pedido
+### 🔐 Autenticação
+* Cadastro com validação completa
+* Login com verificação de credenciais
+* Sessão persistida com AsyncStorage
+* Logout funcional
+
+### 🛒 Pedido
+* Cardápio com imagens e disponibilidade
+* Carrinho com controle de quantidade
+* Observações personalizadas
+* Escolha de horário
+* Escolha de pagamento
+* Finalização do pedido
+
+### 📊 Acompanhamento
+* Status em tempo real
+* Barra de progresso visual
+* Contagem regressiva até retirada
+
+---
+
+## 🚀 Como rodar
+
+### Pré-requisitos
+* Node.js (v18+ recomendado)
+* Expo CLI
+* Expo Go (celular) ou emulador
+* SDK Expo ~54
+
+```bash
+# Clone o projeto
+git clone https://github.com/dipaula-victo/fiap-mdi-cp2-pedeai.git
+
+# Entre na pasta
+cd pede-ai
+
+# Instale dependências
+npm install
+
+# Rode o projeto
+npx expo start
+```
+
+---
+
+## 📲 Execução
+
+* Use o app **Expo Go** no celular
+* Ou pressione `w` para abrir no navegador
 
 ---
 
@@ -62,149 +119,148 @@ O **PedeAí** é um aplicativo mobile desenvolvido com **React Native + Expo** q
 ## 🔄 Fluxo do App
 
 ```text
-Início → Cardápio → Carrinho → Status do Pedido
-                           ↓
-                  Retirada no balcão
-                           ↓
-                    Novo pedido
+Autenticação → Início → Cardápio → Carrinho → Status do Pedido
+                                                     ↓
+                                             Retirada no balcão
+                                                     ↓
+                                                Novo pedido
 ```
 
----
 
 ## 🗂️ Estrutura do Projeto
 
 ```bash
-├── app/
-│   ├── _layout.js        # Configuração de navegação (expo-router)
-│   ├── cart.js           # Carrinho de compras
-│   ├── index.js          # Tela inicial
-│   ├── menu.js           # Cardápio digital
-│   └── status.js         # Acompanhamento do pedido
-│
-├── components/
-│   ├── BadgeStatus.js   # Badge disponível / esgotado
-│   ├── BarraProgressoPedido.js    # Barra de progresso das etapas do pedido
-│   ├── BotaoCustomizado.js    # Botão reutilizável com variantes
-│   └── CardProduto.js    # Card de produto do cardápio
-│
-├── theme.js              # Design tokens: cores, espaçamentos, tamanhos
-├── assets/               # Ícones e imagens do app
-├── app.json              # Configuração do Expo
-└── package.json
 
-```
-
----
-
-## 🧩 Componentes
-
-### BotaoCustomizado
-Botão padronizado com suporte a variantes de cor e estado desativado.
-
-```jsx
-<BotaoCustomizado label="Ver Cardápio" onPress={() => router.push('/menu')} />
-<BotaoCustomizado label="Carrinho" variant="secondary" onPress={irParaCarrinho} />
-<BotaoCustomizado label="Indisponível" disabled />
-```
-
-### CardProduto
-Card completo de produto, com imagem, nome, descrição, preço, badge de status e botão de adicionar.
-
-```jsx
-<CardProduto item={item} onAdd={(item) => adicionar(item)} />
-```
-
-### BadgeStatus
-Badge de disponibilidade para uso em listagens.
-
-```jsx
-<BadgeStatus available={true} />   // → "Disponível" (verde)
-<BadgeStatus available={false} />  // → "Esgotado" (cinza)
-```
-
-### BarraProgressoPedido
-Barra de progresso com as etapas do pedido destacadas visualmente.
-
-```jsx
-<BarraProgressoPedido currentStatus="Preparando..." />
-``` 
-
----
-
-## 🎨 Design System
-
-Todas as cores, espaçamentos e tamanhos de fonte estão centralizados em `theme.js`.
-
-```js
-import { colors, spacing, fontSize, radius } from '../theme';
-
-// Exemplos de uso
-colors.primary    // '#3d13f6' — roxo principal
-colors.secondary  // '#f769b2' — rosa
-colors.success    // '#6ad408' — verde
-spacing.xl        // 20
-fontSize.lg       // 18
-```
-
----
-
-## 🔄 Fluxo de uso
-
-
-[Início] → [Cardápio] → [Carrinho] → [Status do Pedido]
-                                           ↓
-                                    [Pronto! Retirar no balcão]
-                                           ↓
-                                    [Fazer novo pedido]
-
-
----
-
-## 🚀 Como rodar
+## 🗂️ Estrutura do Projeto
 
 ```bash
-# Clone o projeto
-git clone <https://github.com/djxlma/fiap-mdi-cp1-pedeai.git>
+FIAP-MDI-CP2-PEDEAI/
+├── pede-ai/
+│   ├── .expo/
+│   ├── app/
+│   │   ├── (auth)/
+│   │   │   ├── cadastro.js      
+│   │   │   └── login.js        
+│   │   │
+│   │   ├── (tabs)/
+│   │   │   ├── cart.js          
+│   │   │   ├── index.js         
+│   │   │   ├── menu.js          
+│   │   │   └── status.js        
+│   │   │
+│   │   └── _layout.js        
+│   │
+│   ├── assets/               
+│   │
+│   ├── components/
+│   │   ├── BadgeStatus.js       
+│   │   ├── BarraProgressoPedido.js 
+│   │   ├── BotaoCustomizado.js  
+│   │   └── CardProduto.js       
+│   │
+│   ├── constants/
+│   │   └── theme.js            
+│   │
+│   ├── context/
+│   │   ├── AuthContext.js      
+│   │   ├── CarrinhoContext.js   
+│   │   └── ThemeContext.js      
+│   │
+│   ├── node_modules/
+│   ├── app.json
+│   ├── package-lock.json
+│   ├── package.json
+│
+├── LICENSE
+└── README.md
 
-# Entre na pasta
-cd pede-ai
-
-# Instale dependências
-npm install
-
-# Rode o projeto
-npx expo start
 ```
+
+## 🌐 Contexts
+
+### AuthContext
+
+* Usuário logado
+* Login
+* Logout
+* Persistência da sessão
+* CarrinhoContext
+* Estado do carrinho
+* Adição/remoção de itens
+* Finalização de pedidos
+* ThemeContext
+* Dark mode
+* Alternância de tema
 
 ---
 
-## 📲 Execução
+### 🔐 Autenticação
 
-* Use o app **Expo Go** no celular
-* Ou pressione `w` para abrir no navegador
+* Dados armazenados no AsyncStorage
+* Validação no login
+* Sessão persistida
+* Redirecionamento automático
+
+---
+
+### 💾 AsyncStorage
+
+Utilizado para salvar:
+* Usuário → "usuario"
+* Sessão → "usuarioLogado"
+* Carrinho → "carrinho"
+* Pedidos → "pedidos"
+
+---
+
+### 🔒 Navegação protegida
+
+Implementada em _layout.js:
+*Usuário não logado → redirecionado para login
+*Usuário logado → acesso liberado ao app
+
+---
+
+## ⭐ Diferencial Implementado
+### 🌙 Dark Mode
+### ✔️ O que é:
+Sistema de alternância entre modo claro e escuro
+
+### 🎯 Por que escolhemos:
+Melhora a experiência do usuário
+Aumenta acessibilidade
+Torna o app mais moderno
+### ⚙️ Como foi feito:
+* ThemeContext
+* Uso de useTheme()
+* Estilos dinâmicos (createStyles)
+* Botão de toggle na tela inicial
+
+---
+
+## 🔮 Próximos Passos
+
+Se tivéssemos mais tempo:
+* Backend real (API)
+* Histórico de pedidos
+* Notificações push
+* Pagamento integrado
+* Painel administrativo
 
 ---
 
 ## 🛠️ Tecnologias
 
-| Tecnologia | Versão | Uso |
-|---|---|---|
-| React Native | 0.81 | Base do app mobile |
-| Expo | ~54 | Plataforma de desenvolvimento |
-| expo-router | ~6 | Navegação entre telas |
-| React | 19 | Interface declarativa |
----
-
-## 🔮 Próximos passos
-
-* [ ] Login de usuários
-* [ ] Backend integrado
-* [ ] Pagamento via API
-* [ ] Notificações push
-* [ ] Painel administrativo
+| Tecnologia   | Uso           |
+| ------------ | ------------- |
+| React Native | Interface     |
+| Expo         | Plataforma    |
+| Expo Router  | Navegação     |
+| AsyncStorage | Persistência  |
+| Context API  | Estado global |
 
 ---
 
-## 📄 Licença
+📄 Licença
 
 MIT © FIAP
