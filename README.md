@@ -94,18 +94,20 @@ npx expo start
 
 ## 📱 Capturas de Tela
 
+| Login | Cadastro |
+| --- | --- |
+| ![Login](./pede-ai/assets/screenshots/login.png) | ![Cadastro](./pede-ai/assets/screenshots/cadastro.png) |
+
 | Tela Inicial | Cardápio |
 | --- | --- |
-| ![Tela Inicial](./pede-ai/assets/screenshots/telaInicial.jpg) | ![Cardápio](./pede-ai/assets/screenshots/cardapio.jpg) |
+| ![Tela Inicial](./pede-ai/assets/screenshots/telaInicial.png) | ![Cardápio](./pede-ai/assets/screenshots/cardapio.png) |
 
 | Carrinho | Status do Pedido |
 | --- | --- |
-| ![Carrinho](./pede-ai/assets/screenshots/carrinho.jpg) | ![Status](./pede-ai/assets/screenshots/statusDoPedido.jpg) |
+| ![Carrinho](./pede-ai/assets/screenshots/carrinho.png) | ![Status](./pede-ai/assets/screenshots/statusDoPedido.png) |
 
-| Pedido Concluído |
-| --- |
-| ![Pedido Concluído](./pede-ai/assets/screenshots/pedidoConcluido.jpg) |
-<<<<<<< HEAD
+
+
 
 ---
 
